@@ -14,7 +14,7 @@ namespace fakes {
      * A fake `ts.System` that leverages a virtual file system.
      */
     export class System implements ts.System {
-        public readonly vfs: vfs.FileSystem;
+        public vfs: vfs.FileSystem;
         public readonly args: string[] = [];
         public readonly output: string[] = [];
         public readonly newLine: string;
@@ -154,6 +154,10 @@ namespace fakes {
 
         public getEnvironmentVariable(name: string): string {
             return (this._env && this._env[name])!; // TODO: GH#18217
+        }
+
+        public useFileSystem(fileSystem: vfs.FileSystem): void {
+            this.vfs = fileSystem;
         }
 
         private _getStats(path: string) {

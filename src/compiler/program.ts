@@ -66,8 +66,8 @@ namespace ts {
         mtime: Date;
     }
 
-    export function createCompilerHost(options: CompilerOptions, setParentNodes?: boolean): CompilerHost {
-        return createCompilerHostWorker(options, setParentNodes);
+    export function createCompilerHost(options: CompilerOptions, setParentNodes?: boolean, system = sys): CompilerHost {
+        return createCompilerHostWorker(options, setParentNodes, system);
     }
     /*@internal*/
     // TODO(shkamat): update this after reworking ts build API

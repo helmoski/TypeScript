@@ -884,6 +884,10 @@ namespace Harness.LanguageService {
                     };
             }
         }
+
+        useFileSystem(_: typeof vfs.FileSystem): void {
+            throw new Error('NOT IMPLEMENTED');
+        }
     }
 
     export class ServerLanguageServiceAdapter implements LanguageServiceAdapter {

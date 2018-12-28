@@ -3023,6 +3023,7 @@ declare namespace ts {
 declare function setTimeout(handler: (...args: any[]) => void, timeout: number): any;
 declare function clearTimeout(handle: any): void;
 declare namespace ts {
+    const nodeFs: any;
     enum FileWatcherEventKind {
         Created = 0,
         Changed = 1,
@@ -3070,6 +3071,7 @@ declare namespace ts {
         clearScreen?(): void;
         base64decode?(input: string): string;
         base64encode?(input: string): string;
+        useFileSystem(fileSystem: typeof nodeFs): void;
     }
     interface FileWatcher {
         close(): void;
@@ -4163,7 +4165,7 @@ declare namespace ts {
 declare namespace ts {
     function findConfigFile(searchPath: string, fileExists: (fileName: string) => boolean, configName?: string): string | undefined;
     function resolveTripleslashReference(moduleName: string, containingFile: string): string;
-    function createCompilerHost(options: CompilerOptions, setParentNodes?: boolean): CompilerHost;
+    function createCompilerHost(options: CompilerOptions, setParentNodes?: boolean, system?: System): CompilerHost;
     function getPreEmitDiagnostics(program: Program, sourceFile?: SourceFile, cancellationToken?: CancellationToken): ReadonlyArray<Diagnostic>;
     interface FormatDiagnosticsHost {
         getCurrentDirectory(): string;

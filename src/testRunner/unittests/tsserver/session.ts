@@ -26,7 +26,8 @@ namespace ts.server {
         clearImmediate: noop,
         createHash: Harness.mockHash,
         watchFile: () => noopFileWatcher,
-        watchDirectory: () => noopFileWatcher
+        watchDirectory: () => noopFileWatcher,
+        useFileSystem: noop
     };
 
     class TestSession extends Session {

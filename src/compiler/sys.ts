@@ -2,6 +2,8 @@ declare function setTimeout(handler: (...args: any[]) => void, timeout: number):
 declare function clearTimeout(handle: any): void;
 
 namespace ts {
+    const nodeFs = require("fs");
+
     /**
      * Set a high stack trace limit to provide more information in case of an error.
      * Called for command-line and server use cases.
@@ -491,6 +493,7 @@ namespace ts {
         base64decode?(input: string): string;
         base64encode?(input: string): string;
         /*@internal*/ bufferFrom?(input: string, encoding?: string): Buffer;
+        useFileSystem(fileSystem: typeof nodeFs): void;
     }
 
     export interface FileWatcher {
@@ -544,6 +547,7 @@ namespace ts {
         watchDirectory?(path: string, callback: DirectoryWatcherCallback, recursive?: boolean): FileWatcher;
         realpath(path: string): string;
         getEnvironmentVariable?(name: string): string;
+        useFileSystem(fileSystem: typeof nodeFs): void;
     };
 
     // TODO: GH#18217 this is used as if it's certainly defined in many places.
@@ -554,7 +558,7 @@ namespace ts {
         const byteOrderMarkIndicator = "\uFEFF";
 
         function getNodeSystem(): System {
-            const _fs = require("fs");
+            let _fs = nodeFs;
             const _path = require("path");
             const _os = require("os");
             // crypto can be absent on reduced node installations
@@ -666,6 +670,7 @@ namespace ts {
                 bufferFrom,
                 base64decode: input => bufferFrom(input, "base64").toString("utf8"),
                 base64encode: input => bufferFrom(input).toString("base64"),
+                useFileSystem: (fileSystem: typeof nodeFs) => { _fs = fileSystem; },
             };
             return nodeSystem;
 
@@ -1172,7 +1177,8 @@ namespace ts {
                     return ChakraHost.readDirectory(path, extensions, pattern.basePaths, pattern.excludePattern, pattern.includeFilePattern, pattern.includeDirectoryPattern);
                 },
                 exit: ChakraHost.quit,
-                realpath
+                realpath,
+                useFileSystem: ChakraHost.useFileSystem,
             };
         }
 

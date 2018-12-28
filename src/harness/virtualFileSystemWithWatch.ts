@@ -988,6 +988,10 @@ interface Array<T> {}`
         getEnvironmentVariable(name: string) {
             return this.environmentVariables && this.environmentVariables.get(name) || "";
         }
+
+        useFileSystem(_: vfs.FileSystem): void {
+            throw new Error("NOT IMPLEMENTED");
+        }
     }
 
     export const tsbuildProjectsLocation = "/user/username/projects";
